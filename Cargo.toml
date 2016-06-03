@@ -4,4 +4,5 @@ version = "0.1.0"
 authors = ["James Tease <james.tease@rotork.com>"]
 
 [dependencies]
-glob = "0.2.11"
+glob = "0.2"
+rustc-serialize = "0.3"

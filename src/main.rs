@@ -1,10 +1,12 @@
 extern crate glob;
+extern crate rustc_serialize;
 
 use glob::glob;
 use std::error::Error;
 use std::fs::File;
 use std::io::Read; // need this for .read_to_string to exist
 use std::path::Path;
+use rustc_serialize::json;
 
 const MESSAGE_PATTERN: &'static str = "_translations/**/*.json";
 const LANG_DIR: &'static str = "_translations/lang/";
@@ -18,24 +20,23 @@ fn read_file(filename: &Path) {
 
   match file.read_to_string(&mut contents) {
     Err(e) => panic!("Couldn't read {}: {}", filename.display(), e.description()),
-    Ok(_) => println!("{}", contents)
+    Ok(_) => println!("{}", json::decode(&contents).unwrap())
   };
-  // println!("{}", contents.len());
 }
 
 fn main() {
-    println!("Hello, world!");
+  // open src files
+  // read in eng translation
+  // convert to struct
+  // http://zsiciarz.github.io/24daysofrust/book/day6.html
 
-    // let default_messages = glob(MESSAGE_PATTERN);
-    // println!(default_messages);
-
-    for entry in glob(MESSAGE_PATTERN).unwrap() {
-      match entry {
-        Ok(path) => { // path = PathBuf
-          println!("{:?}", path);
-          read_file(path.as_path());
-        },
-        Err(e) => println!("{:?}", e)
-      }
+  for entry in glob(MESSAGE_PATTERN).unwrap() {
+    match entry {
+      Ok(path) => { // path = PathBuf
+        println!("{:?}", path);
+        read_file(path.as_path());
+      },
+      Err(e) => println!("{:?}", e)
     }
+  }
 }
