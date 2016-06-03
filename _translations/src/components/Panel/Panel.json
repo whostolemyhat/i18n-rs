@@ -1,0 +1,7 @@
+[
+  {
+    "id": "panel.noData",
+    "description": "Info text when there is no data in a panel",
+    "defaultMessage": "No data for this panel"
+  }
+]

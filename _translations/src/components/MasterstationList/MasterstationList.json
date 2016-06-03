@@ -1,0 +1,12 @@
+[
+  {
+    "id": "masterstations.heading",
+    "description": "Masterstation heading text",
+    "defaultMessage": "Masterstations"
+  },
+  {
+    "id": "masterstations.loading",
+    "description": "Masterstation loading text",
+    "defaultMessage": "Loading Masterstations..."
+  }
+]

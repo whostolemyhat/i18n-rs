@@ -1,0 +1,12 @@
+[
+  {
+    "id": "devicedetail.heading",
+    "description": "Device detail heading",
+    "defaultMessage": "Device #{id}"
+  },
+  {
+    "id": "devicedetail.panelLoading",
+    "description": "Device detail panel loading",
+    "defaultMessage": "Loading Panel..."
+  }
+]

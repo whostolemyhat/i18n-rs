@@ -1,0 +1,12 @@
+[
+  {
+    "id": "interfaces.heading",
+    "description": "Interface heading text",
+    "defaultMessage": "Interfaces"
+  },
+  {
+    "id": "interfaces.loading",
+    "description": "Interfaces loading text",
+    "defaultMessage": "Loading Interfaces..."
+  }
+]

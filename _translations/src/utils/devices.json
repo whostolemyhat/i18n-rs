@@ -1,0 +1,27 @@
+[
+  {
+    "id": "status.normal",
+    "description": "NAMUR normal",
+    "defaultMessage": "Normal"
+  },
+  {
+    "id": "status.maintenance",
+    "description": "NAMUR maintenance",
+    "defaultMessage": "Maintenance"
+  },
+  {
+    "id": "status.out_of_spec",
+    "description": "NAMUR out_of_spec",
+    "defaultMessage": "Out of spec"
+  },
+  {
+    "id": "status.function_check",
+    "description": "NAMUR function_check",
+    "defaultMessage": "Function check"
+  },
+  {
+    "id": "status.failure",
+    "description": "NAMUR failure",
+    "defaultMessage": "Failure"
+  }
+]

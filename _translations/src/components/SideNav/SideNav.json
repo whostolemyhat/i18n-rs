@@ -1,0 +1,42 @@
+[
+  {
+    "id": "sidenav.home",
+    "description": "Main menu home",
+    "defaultMessage": "Home"
+  },
+  {
+    "id": "sidenav.alarms",
+    "description": "Main menu alarms",
+    "defaultMessage": "Alarms"
+  },
+  {
+    "id": "sidenav.devices",
+    "description": "Main menu devices",
+    "defaultMessage": "Devices"
+  },
+  {
+    "id": "sidenav.interfaces",
+    "description": "Main menu interfaces",
+    "defaultMessage": "Interfaces"
+  },
+  {
+    "id": "sidenav.masterstations",
+    "description": "Main menu masterstations",
+    "defaultMessage": "Masterstation"
+  },
+  {
+    "id": "sidenav.tasks",
+    "description": "Main menu tasks",
+    "defaultMessage": "Tasks"
+  },
+  {
+    "id": "sidenav.settings",
+    "description": "Main menu settings",
+    "defaultMessage": "Settings"
+  },
+  {
+    "id": "sidenav.logout",
+    "description": "Main menu logout",
+    "defaultMessage": "Logout"
+  }
+]

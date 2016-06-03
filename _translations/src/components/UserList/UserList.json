@@ -1,0 +1,12 @@
+[
+  {
+    "id": "users.heading",
+    "description": "User heading text",
+    "defaultMessage": "Users"
+  },
+  {
+    "id": "users.loading",
+    "description": "Users loading text",
+    "defaultMessage": "Loading Users..."
+  }
+]

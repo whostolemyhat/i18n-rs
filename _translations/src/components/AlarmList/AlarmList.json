@@ -1,0 +1,12 @@
+[
+  {
+    "id": "alarms.heading",
+    "description": "Alarm heading text",
+    "defaultMessage": "Alarms"
+  },
+  {
+    "id": "alarms.loading",
+    "description": "Alarms loading text",
+    "defaultMessage": "Loading Alarms..."
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "devices.heading",
+    "description": "Device heading text",
+    "defaultMessage": "Devices"
+  },
+  {
+    "id": "devices.loading",
+    "description": "Devices loading text",
+    "defaultMessage": "Loading Devices..."
+  }
+]

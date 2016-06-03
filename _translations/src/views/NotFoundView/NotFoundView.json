@@ -1,0 +1,12 @@
+[
+  {
+    "id": "notFound.welcome",
+    "description": "page message",
+    "defaultMessage": "Uhoh. Its a 404."
+  },
+  {
+    "id": "notFound.linkHomeView",
+    "description": "Text link for home view",
+    "defaultMessage": "Back To Home View"
+  }
+]
