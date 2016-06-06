@@ -7,36 +7,97 @@ use std::fs::File;
 use std::io::Read; // need this for .read_to_string to exist
 use std::path::Path;
 use rustc_serialize::json;
+use rustc_serialize::json::Json;
 
 const MESSAGE_PATTERN: &'static str = "_translations/**/*.json";
 const LANG_DIR: &'static str = "_translations/lang/";
 
-fn read_file(filename: &Path) {
-  let mut contents = String::new();
-  let mut file = match File::open(filename) {
-    Err(e) => panic!("Couldn't open {}: {}", filename.display(), e.description()),
-    Ok(file) => file
-  };
-
-  match file.read_to_string(&mut contents) {
-    Err(e) => panic!("Couldn't read {}: {}", filename.display(), e.description()),
-    Ok(_) => println!("{}", json::decode(&contents).unwrap())
-  };
+#[derive(Debug, RustcDecodable, RustcEncodable)]
+struct Message {
+  id: String,
+  description: String,
+  defaultMessage: String
 }
+
+// #[derive(Debug, RustcDecodable, RustcEncodable)]
+// struct Messages {
+//   messages: Vec<Message>
+// }
+
+
+
+// fn read_file(filename: &Path) {
+//   let mut contents = String::new();
+//   let mut file = match File::open(filename) {
+//     Err(e) => panic!("Couldn't open {}: {}", filename.display(), e.description()),
+//     Ok(file) => file
+//   };
+
+//   match file.read_to_string(&mut contents) {
+//     Err(e) => panic!("Couldn't read {}: {}", filename.display(), e.description()),
+//     Ok(_) => {
+//       let messages: Messages = match json::decode(&contents) {
+//         Err(e) => panic!("Error decoding {}", e.description()),
+//         Ok(messages) => messages
+//       };
+//       println!("{:?}", messages);
+//     }
+//   }
+
+// }
 
 fn main() {
   // open src files
   // read in eng translation
   // convert to struct
   // http://zsiciarz.github.io/24daysofrust/book/day6.html
+  // let raw = "{
+  //   \"id\": \"alarms.heading\",
+  //   \"description\": \"Alarm heading text\",
+  //   \"defaultMessage\": \"Alarms\"
+  // }";
 
-  for entry in glob(MESSAGE_PATTERN).unwrap() {
-    match entry {
-      Ok(path) => { // path = PathBuf
-        println!("{:?}", path);
-        read_file(path.as_path());
-      },
-      Err(e) => println!("{:?}", e)
-    }
+  let arr = "[{
+    \"id\": \"alarms.heading\",
+    \"description\": \"Alarm heading text\",
+    \"defaultMessage\": \"Alarms\"
+  },{
+    \"id\": \"alarms.heading2\",
+    \"description\": \"Alarm heading text\",
+    \"defaultMessage\": \"Alarms 2\"
+  }]";
+
+  // let message: Message = json::decode(raw).unwrap();
+  // println!("{:?}", message);
+
+  let msgs = Json::from_str(arr).unwrap();
+  println!("{:?}", msgs);
+
+  let data = msgs.as_array().unwrap();
+  println!("{:?}", data);
+
+  for msg in data {
+    let message = msg.as_object().unwrap();
+    println!("{:?}", message);
+
+    let decoded: Message = json::decode(&msg.to_string()).unwrap();
+    println!("{:?}", decoded);
   }
+
+  // for(key, value) in data.iter() {
+  //   println!("{:?}: {}", key, match *value {
+  //     Json::String(ref v) => format!("{} (string)", v),
+  //     _ => format!("other")
+  //   });
+  // }
+
+  // for entry in glob(MESSAGE_PATTERN).unwrap() {
+  //   match entry {
+  //     Ok(path) => { // path = PathBuf
+  //       println!("{:?}", path);
+  //       read_file(path.as_path());
+  //     },
+  //     Err(e) => println!("{:?}", e)
+  //   }
+  // }
 }
