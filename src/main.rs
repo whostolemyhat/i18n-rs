@@ -9,7 +9,7 @@ use std::path::Path;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
 
-const MESSAGE_PATTERN: &'static str = "_translations/**/*.json";
+const MESSAGE_PATTERN: &'static str = "_translations/src/**/*.json";
 // const LANG_DIR: &'static str = "_translations/lang/";
 
 #[derive(Debug, RustcDecodable, RustcEncodable)]
@@ -24,7 +24,7 @@ struct Message {
 //   messages: Vec<Message>
 // }
 
-fn read_file(filename: &Path) {
+fn read_file(filename: &Path, messages: &mut Vec<Message>) {
   let mut contents = String::new();
   let mut file = match File::open(filename) {
     Err(e) => panic!("Couldn't open {}: {}", filename.display(), e.description()),
@@ -39,7 +39,8 @@ fn read_file(filename: &Path) {
   let data = msgs.as_array().unwrap();
   for msg in data {
     let message: Message = json::decode(&msg.to_string()).unwrap();
-    println!("{:?}", message);
+    // println!("{:?}", message);
+    messages.push(message);
   }
 }
 
@@ -88,13 +89,17 @@ fn main() {
   //   });
   // }
 
+  let mut messages = vec![];
+
   for entry in glob(MESSAGE_PATTERN).unwrap() {
     match entry {
       Ok(path) => { // path = PathBuf
-        println!("{:?}", path);
-        read_file(path.as_path());
+        // println!("{:?}", path);
+        read_file(path.as_path(), &mut messages);
       },
       Err(e) => println!("{:?}", e)
     }
   }
+
+  println!("{:?}", messages);
 }

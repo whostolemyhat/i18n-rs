@@ -1,0 +1,33 @@
+{
+  "home.welcome": "Bienvenue au P4UI",
+  "home.linkNotFoundView": "Aller à la vue 404 error",
+  "languageSelector.spanish": "Español",
+  "languageSelector.english": "Inglés",
+  "languageSelector.french": "Francés",
+  "notFound.welcome": "Cella est la vue 404 error",
+  "notFound.linkHomeView": "Retourner à la vue de dèpart",
+
+  "sidenav.home": "Domicile",
+  "sidenav.alarms": "Alarmes",
+  "sidenav.devices": "Dispotifs",
+  "sidenav.interfaces": "Interfaces",
+  "sidenav.masterstations": "Stationmaîtresses",
+  "sidenav.tasks": "Tâches",
+  "sidenav.settings": "Réglages",
+  "sidenav.logout": "SignOut",
+
+  "status.normal": "Ordinaire",
+  "status.maintenance": "Entretien",
+  "status.out_of_spec": "Hors spécifications",
+  "status.function_check": "Contrôle de fonctionnement",
+  "status.failure": "Échec",
+
+  "alarms.heading": "Alarmes",
+  "alarms.loading": "Alarmes de chargement...",
+  "devices.heading": "Dispositifs",
+  "devices.loading": "Dispositifs de chargement...",
+  "masterstations.heading": "Stationmaîtresses",
+  "masterstations.loading": "Stationmaîtresse de chargement...",
+  "interfaces.heading": "Interfaces",
+  "interfaces.loading": "Interfaces de chargement..."
+}
