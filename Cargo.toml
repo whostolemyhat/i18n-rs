@@ -6,3 +6,4 @@ authors = ["James Tease <james.tease@rotork.com>"]
 [dependencies]
 glob = "0.2"
 rustc-serialize = "0.3"
+regex = "0.1"
