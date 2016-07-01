@@ -61,12 +61,12 @@ fn read_translation_file(filename: &Path, messages: &Vec<Message>) {
   // for each message
   for message in messages {
     // println!("{:?}, {:?}", message.id, message.defaultMessage);
-    let mut translation: HashMap<&str, &String> = HashMap::new();
-    translation.insert(en_string, &message.defaultMessage.to_string());
+    let mut translation: HashMap<&str, String> = HashMap::new();
+    translation.insert(en_string, message.defaultMessage.to_string());
     translations.insert(&message.id, translation);
   }
 
-  println!("{:?}", translations);
+  // println!("{:?}", translations);
   // use id as key
 
   // get name of file to use as key
@@ -91,7 +91,11 @@ fn read_translation_file(filename: &Path, messages: &Vec<Message>) {
 
   let data = msgs.as_object().unwrap();
 
-  for (key, value) in data.iter() {
+  for translation in data {
+    println!("{:?} {:?}", translation.0, translation.1.as_string().unwrap());
+  }
+
+  // for (key, value) in data.iter() {
     // println!("{}: {}", key, value);
     // println!("{}: {}", key, match *value {
     //   Json::String(ref v) => {
@@ -104,29 +108,30 @@ fn read_translation_file(filename: &Path, messages: &Vec<Message>) {
     //   _ => format!("other")
     // });
 
-    let translation = Translation{
-      key: key,
-      value: value.as_string().unwrap().to_string(),
-      lang: lang.to_string()
-    };
+    // let translation = Translation{
+    //   key: key,
+    //   value: value.as_string().unwrap().to_string(),
+    //   lang: lang.to_string()
+    // };
 
-    let mut translation_map: HashMap<&str, &String> = HashMap::new();
-    translation_map.insert(&translation.key, &translation.value);
+    // let mut translation_map: HashMap<&str, &String> = HashMap::new();
+    // translation_map.insert(&translation.key, &translation.value);
 
     // println!("key: {:?}", key);
     // println!("map: {:?}", translations.get(key));
     // println!("{:?}", translation);
     // TODO make sure key exists
-    match translations.get(key) {
-      Some(map) => map,
-      None => {
-        translations.insert(&translation.key.to_string(), translation_map);
-        return;
-      }
-    };
+    // match translations.get(key) {
+    //   Some(map) => map,
+    //   None => {
+    //     translations.insert(&translation.key.to_string(), translation_map);
+    //     return;
+    //   }
+    // };
     // en_key.insert(lang, &value.to_string());
     // translations.insert(key, translation);
-  }
+    // translations.insert(&translation.key.to_string(), translation_map);
+  // }
 }
 
 fn main() {
