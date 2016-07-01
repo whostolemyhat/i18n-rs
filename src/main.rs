@@ -1,38 +1,24 @@
 extern crate glob;
 extern crate rustc_serialize;
 
-// TODO use box?
-
 use glob::glob;
 use std::error::Error;
 use std::fs::File;
 use std::io::Read; // need this for .read_to_string to exist
 use std::path::Path;
-use std::collections::BTreeMap;
 use std::collections::HashMap;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
 
 const MESSAGE_PATTERN: &'static str = "_translations/src/**/*.json";
 const TRANSLATION_PATTERN: &'static str = "_translations/lang/**/*.json";
-const en_string: &'static str = "en";
-// const LANG_DIR: &'static str = "_translations/lang/";
+const EN_STRING: &'static str = "en";
 
 #[derive(Debug, RustcDecodable, RustcEncodable)]
 struct Message {
   id: String,
   description: String,
   defaultMessage: String
-}
-
-struct TranslationFile {
-  keys: BTreeMap<String, Json>
-}
-
-struct Translation<'a> {
-  key: &'a String,
-  value: String,
-  lang: String
 }
 
 fn read_file(filename: &Path, messages: &mut Vec<Message>) {
@@ -55,26 +41,11 @@ fn read_file(filename: &Path, messages: &mut Vec<Message>) {
 
 }
 
-fn read_translation_file(filename: &Path, messages: &Vec<Message>) {
-  // create hashmap
-  let mut translations = HashMap::new();
-  // for each message
-  for message in messages {
-    // println!("{:?}, {:?}", message.id, message.defaultMessage);
-    let mut translation: HashMap<&str, String> = HashMap::new();
-    translation.insert(en_string, message.defaultMessage.to_string());
-    translations.insert(&message.id, translation);
-  }
-
-  // println!("{:?}", translations);
-  // use id as key
-
+fn read_translation_file(filename: &Path, translations: &mut HashMap<String, HashMap<String, String>>) {
   // get name of file to use as key
   let lang_file = filename.file_name().unwrap().to_str().unwrap();
   let lang_name: Vec<&str> = lang_file.split('.').collect();
   let lang = lang_name[0];
-
-  println!("{:?}", lang);
 
   let mut contents = String::new();
   let mut file = match File::open(filename) {
@@ -87,51 +58,20 @@ fn read_translation_file(filename: &Path, messages: &Vec<Message>) {
     Ok(_) => Json::from_str(&contents).unwrap()
   };
 
-  println!("msgs: {:?}", msgs);
-
   let data = msgs.as_object().unwrap();
 
+  // to_string everywhere: https://users.rust-lang.org/t/variable-does-not-live-long-enough/936/2
+  // converts to String which are on the heap so live long enough
   for translation in data {
-    println!("{:?} {:?}", translation.0, translation.1.as_string().unwrap());
+    let translation_map: HashMap<String, String> = HashMap::new();
+    // translation_map.insert(lang.to_string(), translation.1.as_string().unwrap().to_string());
+
+    // not the most efficient way
+    // http://stackoverflow.com/questions/28512394/how-to-lookup-from-and-insert-into-a-hashmap-efficiently
+    // http://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html
+    let existing = translations.entry(translation.0.to_string()).or_insert(translation_map);
+    existing.insert(lang.to_string(), translation.1.as_string().unwrap().to_string());
   }
-
-  // for (key, value) in data.iter() {
-    // println!("{}: {}", key, value);
-    // println!("{}: {}", key, match *value {
-    //   Json::String(ref v) => {
-    //     format!("{} (string)", v)
-    //   },
-    //   Json::Object(ref o) => {
-    //     // translations.push( json::decode(&o.to_string()).unwrap() );
-    //     format!("{:?} object", o) // o is the object (value) where k = 'es'
-    //   },
-    //   _ => format!("other")
-    // });
-
-    // let translation = Translation{
-    //   key: key,
-    //   value: value.as_string().unwrap().to_string(),
-    //   lang: lang.to_string()
-    // };
-
-    // let mut translation_map: HashMap<&str, &String> = HashMap::new();
-    // translation_map.insert(&translation.key, &translation.value);
-
-    // println!("key: {:?}", key);
-    // println!("map: {:?}", translations.get(key));
-    // println!("{:?}", translation);
-    // TODO make sure key exists
-    // match translations.get(key) {
-    //   Some(map) => map,
-    //   None => {
-    //     translations.insert(&translation.key.to_string(), translation_map);
-    //     return;
-    //   }
-    // };
-    // en_key.insert(lang, &value.to_string());
-    // translations.insert(key, translation);
-    // translations.insert(&translation.key.to_string(), translation_map);
-  // }
 }
 
 fn main() {
@@ -142,25 +82,33 @@ fn main() {
   for entry in glob(MESSAGE_PATTERN).unwrap() {
     match entry {
       Ok(path) => { // path = PathBuf
-        // println!("{:?}", path);
         read_file(path.as_path(), &mut messages);
       },
       Err(e) => println!("{:?}", e)
     }
   }
-  println!("{:?}", messages);
 
-  // get translations
-  // let translations: Vec<BTreeMap<String, Json>> = vec![];
+  let mut translations = HashMap::new();
+
+  // add en to map
+  for message in messages {
+    let mut translation: HashMap<String, String> = HashMap::new();
+    translation.insert(EN_STRING.to_string(), message.defaultMessage.to_string());
+    translations.insert(message.id.to_string(), translation);
+  }
+
+  // convert translation files and add to map
   for entry in glob(TRANSLATION_PATTERN).unwrap() {
     match entry {
       Ok(path) => {
-        read_translation_file(path.as_path(), &messages);
+        read_translation_file(path.as_path(), &mut translations);
       },
       Err(e) => println!("{:?}", e)
     }
   }
-  // println!("{:?}", translations);
 
-  // merge by keys
+  println!("{:?}", translations);
+
+  // convert to JSON
+  // json::encode(translations);
 }
